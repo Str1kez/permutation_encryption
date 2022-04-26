@@ -20,11 +20,11 @@ class Base:
         if self._dtype:
             if isinstance(self._dtype, tuple):
                 if self._dtype[0] == 'group':
-                    self._data = list(''.join(x) for x in grouper(self._data, self._dtype[1]))  # заменить на strict
+                    self._data = list(''.join(x) for x in grouper(self._data, self._dtype[1]))  # ! заменить на strict
                 else:
                     raise ValueError('Your data type is not group')
-            elif (self._dtype == 'byte' or self._dtype == 'bit') and not isinstance(self._dtype, bytearray):
-                raise TypeError(f'It is not {self._dtype}')
+            # elif (self._dtype == 'byte' or self._dtype == 'bit') and not isinstance(self._dtype, bytearray):
+            #     raise TypeError(f'It is not {self._dtype}')
     
     def _check_last_block(self, dimension) -> None:
         if len(self._data) % dimension:

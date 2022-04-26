@@ -28,33 +28,26 @@ class Vertical(Base):
         if self._with_null is False and any('\0' in x for x in self._data):
             indexes = self._key[::-1][:self._null_amount]
             indexes.sort()
-            if self._dtype and 'group' in self._dtype:
-                while '\0' * self.m in self._data:
-                    self._data.remove('\0' * self.m)
-                data_list = self._data
-                print(data_list)
-            else:
-                data_list = list(self._data.replace('\0', ''))
+            self._data = [x for x in self._data if '\0' not in x]
             for ind in indexes:
-                data_list.insert(ind * self.m + self.m - 1, '\0')
-            print(data_list)
-            self._data = data_list
+                self._data.insert(ind * self.m + self.m - 1, '\0')
+            # print(self._data)
         grouped_data = list(grouper(self._data, self.m))
         res = ''
-        print(grouped_data)
+        # print(grouped_data)
         new_block = [grouped_data[key] for key in self._key]
         res += ''.join(''.join(line) for line in zip(*new_block))
-        if self._with_null is False:
-            return res.replace('\0', '')
-        return res
+        return res.rstrip('\0')
             
-key = '2x4 '
-gkey = Vertical.generate_key(4)
-# gkey = '1_3_0_2'
-print(gkey)
-v = Vertical('IlyaVazinoVa22', key + gkey, with_null=False, dtype=('group', 2))
-print(repr(v._data))
-encrypted = v.encryption()
-print(repr(encrypted))
-v2 = Vertical(encrypted, key + gkey, with_null=False, dtype=('group', 2))
-print(repr(v2.decryption()))
+            
+if __name__ == '__main__':    
+    key = '2x7 '
+    gkey = Vertical.generate_key(7)
+    # gkey = '1_3_0_2'
+    print(gkey)
+    v = Vertical('IlyaVazinoVa2200', key + gkey, with_null=False, dtype=('group', 2))
+    print(repr(v._data))
+    encrypted = v.encryption()
+    print(repr(encrypted))
+    v2 = Vertical(encrypted, key + gkey, with_null=False, dtype=('group', 2))
+    print(repr(v2.decryption()))
