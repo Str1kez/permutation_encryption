@@ -32,7 +32,7 @@ class RailFence(Base):
     def __create_non_zero_rail(self, block: Union[list, str, bytearray]) -> list:
         matrix = self.__create_rail(block)
         i = 0
-        non_zero = [x for x in block if '\0' not in x]
+        non_zero = [x for x in block if '\0' not in str(x)]
         for line in matrix:
             for j in range(self.n):
                 if line[j] is not None:
@@ -41,21 +41,38 @@ class RailFence(Base):
                         i += 1
         return matrix
     
-    def __encryption_byte(self):
+    def __encryption_bit(self) -> list:
+        pass
+    
+    def __encryption_byte(self) -> list:
         blocks = grouper(self._data, self.n, fillvalue='\0')
         res = []
         for block in blocks:
             matrix = self.__create_rail(block)
             res += [x for s in matrix for x in s if x is not None]
+        if self._with_null is False:
+            return [x for x in res if '\0' not in str(x)]
+        return res
 
-    def __encryption_bit(self):
-        pass
-
-    def __decryption_bit(self):
+    def __decryption_bit(self) -> list:
         pass
     
-    def __decryption_byte(self):
-        pass
+    def __decryption_byte(self) -> list:
+        blocks = grouper(self._data, self.n, fillvalue='\0')
+        res = []
+        for block in blocks:
+            if self._with_null is False and any('\0' in str(x) for x in block):
+                matrix = self.__create_non_zero_rail(block)
+            else:
+                matrix = self.__create_decrypted_rail(block)
+            i = 0
+            down = False
+            for j in range(self.n):
+                res.append(matrix[i][j])
+                if i == 0 or i == self.m - 1:
+                    down = not down
+                i += 1 if down else -1
+        return [x for x in res if '\0' not in str(x)]
     
     def encryption(self):
         if self._dtype:
@@ -76,9 +93,9 @@ class RailFence(Base):
     def decryption(self):
         if self._dtype:
             if self._dtype == 'byte':
-                return self.__encryption_byte()
+                return self.__decryption_byte()
             if self._dtype == 'bit':
-                return self.__encryption_bit()
+                return self.__decryption_bit()
         blocks = grouper(self._data, self.n, fillvalue='\0')
         res = ''
         for block in blocks:
@@ -97,13 +114,18 @@ class RailFence(Base):
     
     
 if __name__ == '__main__':
-    with open('input', 'rb') as f:
+    with open('gd007.png', 'rb') as f:
         data = f.read()
-    key = '3x8'
-    encrypted = RailFence('Lorem Ipsum dar omet lalal', key, with_null=False, dtype=('group', 13))
-    # encrypted = RailFence(data, key, with_null=True, dtype='byte')
+    key = '3x4'
+    # encrypted = RailFence('Lorem Ipsum dar omet lalal', key, with_null=False, dtype=('group', 13))
+    encrypted = RailFence(data, key, with_null=False, dtype='byte')
     crypt = encrypted.encryption()
-    print(repr(crypt))
-    # decrypted = RailFence(crypt, key, with_null=True, dtype='byte')
-    decrypted = RailFence(crypt, key, with_null=True, dtype=('group', 13))
-    print(repr(decrypted.decryption()))
+    # print(repr(crypt))
+    decrypted = RailFence(crypt, key, with_null=False, dtype='byte')
+    # decrypted = RailFence(crypt, key, with_null=True, dtype=('group', 13))
+    decrypt_data = decrypted.decryption()
+    # print(bytes(decrypt_data))
+    # print(data)
+    print(data == bytes(decrypt_data))
+    # with open('output', 'wb') as f:
+        # f.write(bytes(decrypt_data))
