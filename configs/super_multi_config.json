@@ -1,0 +1,29 @@
+[
+    {
+        "name": "RailFence",
+        "key": "3x8",
+        "dtype": null,
+        "with_null": false
+    },
+    {
+        "name": "Simple",
+        "key": "3_1_2_0",
+        "dtype": null,
+        "with_null": false
+    },
+    {
+        "name": "Vertical",
+        "key": "3x4 1_2_3_0",
+        "dtype": [
+            "group",
+            2
+        ],
+        "with_null": false
+    },
+    {
+        "name": "RailFence",
+        "key": "4x10",
+        "dtype": "byte",
+        "with_null": false
+    }
+]

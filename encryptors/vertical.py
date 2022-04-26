@@ -1,4 +1,4 @@
-from base import Base, grouper
+from .base import Base, grouper
 
 
 class Vertical(Base):
@@ -64,7 +64,8 @@ class Vertical(Base):
                 return self.__decryption_byte()
             if self._dtype == 'bit':
                 return self.__decryption_bit()
-            
+        
+        print(self._dtype)
         self._check_last_block(self.k)
         if self._with_null is False and any('\0' in x for x in self._data):
             indexes = self._key[::-1][:self._null_amount]
@@ -79,6 +80,9 @@ class Vertical(Base):
         new_block = [grouped_data[key] for key in self._key]
         res += ''.join(''.join(line) for line in zip(*new_block))
         return res.rstrip('\0')
+    
+    def __str__(self) -> str:
+        return 'Vertical'
             
             
 if __name__ == '__main__':

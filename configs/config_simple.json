@@ -1,0 +1,11 @@
+[
+    {
+        "name": "Simple",
+        "key": "1_0_2_3",
+        "dtype": [
+            "group",
+            2
+        ],
+        "with_null": false
+    }
+]

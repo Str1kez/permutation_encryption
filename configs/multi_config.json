@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Simple",
+        "key": "3_4_1_0_2",
+        "dtype": null,
+        "with_null": false
+    },
+    {
+        "name": "Vertical",
+        "key": "2x7 1_4_0_6_5_2_3",
+        "dtype": null,
+        "with_null": false
+    },
+    {
+        "name": "RailFence",
+        "key": "3x8",
+        "dtype": null,
+        "with_null": false
+    }
+]

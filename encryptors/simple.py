@@ -1,4 +1,4 @@
-from base import Base, grouper
+from .base import Base, grouper
 
 
 class Simple(Base):
@@ -73,6 +73,9 @@ class Simple(Base):
                 # print(repr(s))
             result += ''.join([s[x] for x in self._key])
         return result.rstrip('\0')
+    
+    def __str__(self) -> str:
+        return 'Simple'
 
 if __name__ == '__main__':
     with open('gd007.png', 'rb') as f:

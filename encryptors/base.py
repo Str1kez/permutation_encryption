@@ -18,7 +18,7 @@ class Base:
         
     def _check_dtype(self) -> None:
         if self._dtype:
-            if isinstance(self._dtype, tuple):
+            if isinstance(self._dtype, tuple) or isinstance(self._dtype, list):
                 if self._dtype[0] == 'group':
                     self._data = list(''.join(x) for x in grouper(self._data, self._dtype[1]))  # ! заменить на strict
                 else:
@@ -33,6 +33,8 @@ class Base:
             self._null_amount = dimension - len(self._data) % dimension
             if self._dtype and 'group' in self._dtype:
                 self._data += ['\0' * self._dtype[1] for _ in range(self._null_amount)]
+            elif self._dtype and self._dtype == 'byte':
+                self._data += bytes([0] * self._null_amount)
             else:
                 self._data += '\0' * (self._null_amount)
 

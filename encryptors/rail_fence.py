@@ -1,4 +1,4 @@
-from base import Base, grouper
+from .base import Base, grouper
 from typing import Union
 
 class RailFence(Base):
@@ -111,6 +111,9 @@ class RailFence(Base):
                     down = not down
                 i += 1 if down else -1
         return res.rstrip('\0')
+    
+    def __str__(self) -> str:
+        return 'RailFence'
     
     
 if __name__ == '__main__':
